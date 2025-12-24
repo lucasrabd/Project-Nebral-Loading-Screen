@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="pt-br">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Project Nebral — Loading</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="bg">
+    <video id="bgVideo" autoplay muted loop playsinline preload="auto">
+      <source src="bg.mp4" type="video/mp4" />
+    </video>
+    <div class="vignette"></div>
+    <div class="grain"></div>
+  </div>
+
+  <main class="ui">
+    <header class="top">
+      <div class="brand">
+        <div class="tag">PROJECT</div>
+        <div class="name">NEBRAL</div>
+        <div class="sub">OPERAÇÃO • TEATRO DO IRAQUE</div>
+      </div>
+
+      <div class="status">
+        <div class="dot"></div>
+        <div class="txt">Conectando e baixando conteúdo…</div>
+      </div>
+    </header>
+
+    <section class="card">
+      <h1>Bem-vindo ao teatro de operações</h1>
+      <p>
+        Mantenha o RP fluido.
+      </p>
+
+      <div class="tips">
+        <div class="tip">
+          <span class="k">P</span>
+          <span class="t">Pausar/retomar vídeo de fundo</span>
+        </div>
+        <div class="tip">
+          <span class="k">F10</span>
+          <span class="t">Captura/overlay (dependendo do setup do player)</span>
+        </div>
+      </div>
+
+      <div class="bar">
+        <div class="barFill" id="barFill"></div>
+      </div>
+      <div class="small" id="smallText">Sincronizando assets…</div>
+    </section>
+
+    <footer class="bottom">
+      <div class="hint">Dica: se o vídeo não tocar, clique uma vez na tela.</div>
+      <div class="ver">Project Nebral • Iraque</div>
+    </footer>
+  </main>
+
+  <div class="toast" id="toast">Vídeo pausado</div>
+
+  <script src="app.js"></script>
+</body>
+</html>
