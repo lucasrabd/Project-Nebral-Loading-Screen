@@ -1,24 +1,39 @@
 (function(){
   const video = document.getElementById("bgVideo");
   const toast = document.getElementById("toast");
-  const barFill = document.getElementById("barFill");
   const smallText = document.getElementById("smallText");
 
-  // Fake progress (o GMod não dá % real por padrão na LoadingURL)
+  // GMod loading screen - FORÇAR play do vídeo COM SOM
+  if(video) {
+    video.volume = 1.0;
+    video.muted = false;
+    
+    // Forçar play assim que o vídeo estiver pronto
+    video.addEventListener('loadedmetadata', () => {
+      video.play().catch(err => console.log('Erro ao tocar:', err));
+    });
+    
+    // Tentar play imediatamente também
+    video.play().catch(err => console.log('Erro ao tocar:', err));
+  }
+
+  // Mensagens de loading que vão alternando
   const steps = [
-    { w: 22, t: "Carregando interface…" },
-    { w: 38, t: "Baixando conteúdo do servidor…" },
-    { w: 55, t: "Montando shaders e materiais…" },
-    { w: 72, t: "Sincronizando entidades…" },
-    { w: 88, t: "Finalizando…" },
-    { w: 96, t: "Entrando no servidor…" },
+    "Carregando interface…",
+    "Baixando conteúdo do servidor…",
+    "Montando shaders e materiais…",
+    "Sincronizando entidades…",
+    "Finalizando…",
+    "Entrando no servidor…",
   ];
+  
   let i = 0;
   setInterval(() => {
     if(i < steps.length){
-      barFill.style.width = steps[i].w + "%";
-      smallText.textContent = steps[i].t;
+      smallText.textContent = steps[i];
       i++;
+    } else {
+      i = 0; // Recomeça o ciclo se demorar muito
     }
   }, 1600);
 
@@ -48,11 +63,4 @@
       togglePause();
     }
   });
-
-  // Alguns browsers exigem interação do usuário pra autoplay
-  document.addEventListener("click", () => {
-    if(video && video.paused){
-      video.play().catch(()=>{});
-    }
-  }, { once: true });
 })();
