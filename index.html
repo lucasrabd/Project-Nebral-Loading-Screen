@@ -7,15 +7,16 @@
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
+  <!-- Música ANTES de tudo para garantir que carregue primeiro -->
+  <audio id="bgMusic" autoplay loop preload="auto">
+    <source src="music.mp3" type="audio/mpeg" />
+  </audio>
+
   <div class="bg">
     <div class="slideshow" id="slideshow"></div>
     <div class="vignette"></div>
     <div class="grain"></div>
   </div>
-
-  <audio id="bgMusic" autoplay loop>
-    <source src="music.mp3" type="audio/mpeg" />
-  </audio>
 
   <main class="ui">
     <header class="top">
@@ -61,6 +62,7 @@
     </section>
 
     <footer class="bottom">
+      <div class="hint">Use as setas do teclado para navegar pelas imagens.</div>
       <div class="ver">Project Nebral • Iraque</div>
     </footer>
   </main>
@@ -68,5 +70,30 @@
   <div class="toast" id="toast">Imagem alterada</div>
 
   <script src="app.js"></script>
+  
+  <!-- Script inline para garantir play da música com volume ajustado -->
+  <script>
+    (function(){
+      const audio = document.getElementById('bgMusic');
+      if(audio) {
+        audio.volume = 0.5; // Volume a 50%
+        audio.muted = false;
+        
+        // Tentar tocar imediatamente
+        const tryPlay = () => {
+          audio.play().catch(e => {
+            console.log('Aguardando para tocar música...');
+            setTimeout(tryPlay, 200);
+          });
+        };
+        
+        if(document.readyState === 'loading') {
+          document.addEventListener('DOMContentLoaded', tryPlay);
+        } else {
+          tryPlay();
+        }
+      }
+    })();
+  </script>
 </body>
 </html>

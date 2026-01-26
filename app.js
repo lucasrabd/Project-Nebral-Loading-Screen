@@ -4,18 +4,27 @@
   const smallText = document.getElementById("smallText");
   const music = document.getElementById("bgMusic");
 
-  // Forçar música em alto volume e play automático (GMod)
+  // Música em volume médio (50%)
   if(music) {
-    music.volume = 1.0;
+    music.volume = 0.1 // Volume a 50%
     music.muted = false;
+    music.loop = true;
     
-    // Tentar play imediatamente
-    music.play().catch(err => console.log('Erro ao tocar música:', err));
+    // Múltiplas tentativas de play
+    const forcePlay = () => {
+      music.play()
+        .then(() => console.log('Música tocando!'))
+        .catch(err => {
+          console.log('Tentando tocar música...', err);
+          setTimeout(forcePlay, 500);
+        });
+    };
     
-    // Garantir play quando carregar
-    music.addEventListener('loadeddata', () => {
-      music.play().catch(err => console.log('Erro ao tocar música:', err));
-    });
+    forcePlay();
+    
+    // Tentar quando carregar
+    music.addEventListener('canplay', forcePlay);
+    music.addEventListener('loadeddata', forcePlay);
   }
 
   // Array com as 7 imagens
@@ -59,7 +68,7 @@
   // Inicia com a primeira imagem
   slideshow.style.backgroundImage = `url('${images[0]}')`;
 
-  // Troca automática de imagens a cada 6 segundos (tempo para fade completo + visualização)
+  // Troca automática de imagens a cada 8 segundos
   setInterval(() => {
     setImage(currentIndex + 1);
   }, 8000);
@@ -80,7 +89,7 @@
       smallText.textContent = steps[i];
       i++;
     } else {
-      i = 0; // Recomeça o ciclo se demorar muito
+      i = 0;
     }
   }, 1600);
 
@@ -107,4 +116,21 @@
       showToast("Próxima imagem");
     }
   });
+
+  // Garantir que a música toque em qualquer interação (fallback)
+  document.addEventListener('click', () => {
+    if(music && music.paused) {
+      music.volume = 0.5;
+      music.muted = false;
+      music.play();
+    }
+  }, { once: true });
+
+  document.addEventListener('keydown', () => {
+    if(music && music.paused) {
+      music.volume = 0.5;
+      music.muted = false;
+      music.play();
+    }
+  }, { once: true });
 })();
