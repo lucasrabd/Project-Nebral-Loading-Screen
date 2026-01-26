@@ -10,12 +10,32 @@
 html,body{ height:100%; margin:0; background:var(--bg); font-family:system-ui,Segoe UI,Roboto,Arial; color:var(--fg); }
 
 .bg{ position:fixed; inset:0; overflow:hidden; }
-#bgVideo{
+
+.slideshow{
   width:100%; height:100%;
-  object-fit:cover;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
   filter: contrast(1.05) saturate(0.85) brightness(0.75);
   transform: scale(1.02);
+  opacity: 0;
+  animation: fadeIn 2s ease-in forwards;
 }
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.slideshow.fade-out {
+  animation: fadeOut 1.5s ease-out forwards;
+}
+
+@keyframes fadeOut {
+  from { opacity: 1; }
+  to { opacity: 0; }
+}
+
 .vignette{
   position:absolute; inset:0;
   background: radial-gradient(ellipse at center, rgba(0,0,0,.1) 0%, rgba(0,0,0,.72) 70%, rgba(0,0,0,.92) 100%);
@@ -122,6 +142,7 @@ html,body{ height:100%; margin:0; background:var(--bg); font-family:system-ui,Se
   border-radius:10px;
   min-width:42px;
   text-align:center;
+  font-size: 11px;
 }
 .tip .t{ font-size:13px; color:var(--fg); opacity:.92; }
 
