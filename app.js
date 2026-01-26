@@ -6,11 +6,10 @@
 
   // Música em volume médio (50%)
   if(music) {
-    music.volume = 0.1 // Volume a 50%
+    music.volume = 0.5;
     music.muted = false;
     music.loop = true;
     
-    // Múltiplas tentativas de play
     const forcePlay = () => {
       music.play()
         .then(() => console.log('Música tocando!'))
@@ -21,25 +20,33 @@
     };
     
     forcePlay();
-    
-    // Tentar quando carregar
     music.addEventListener('canplay', forcePlay);
     music.addEventListener('loadeddata', forcePlay);
   }
 
-  // Array com as 7 imagens
+  // Caminhos das imagens no Vercel
   const images = [
-    "img1.jpg",
-    "img2.jpg",
-    "img3.jpg",
-    "img4.jpg",
-    "img5.jpg",
-    "img6.jpg",
-    "img7.jpg"
+    "https://projectnebralload.vercel.app/img1.jpg",
+    "https://projectnebralload.vercel.app/img2.jpg",
+    "https://projectnebralload.vercel.app/img3.jpg",
+    "https://projectnebralload.vercel.app/img4.jpg",
+    "https://projectnebralload.vercel.app/img5.jpg",
+    "https://projectnebralload.vercel.app/img6.jpg",
+    "https://projectnebralload.vercel.app/img7.jpg"
   ];
   
   let currentIndex = 0;
   let isTransitioning = false;
+
+  // Pré-carregar todas as imagens
+  const preloadedImages = [];
+  images.forEach((src, index) => {
+    const img = new Image();
+    img.onload = () => console.log('Imagem ' + (index + 1) + ' carregada');
+    img.onerror = () => console.error('ERRO ao carregar imagem ' + (index + 1) + ': ' + src);
+    img.src = src;
+    preloadedImages.push(img);
+  });
 
   // Função para trocar imagem com efeito fade
   function setImage(index) {
@@ -60,9 +67,9 @@
       
       setTimeout(() => {
         isTransitioning = false;
-      }, 2000); // Tempo do fade in
+      }, 2000);
       
-    }, 1500); // Tempo do fade out
+    }, 1500);
   }
 
   // Inicia com a primeira imagem
@@ -73,7 +80,7 @@
     setImage(currentIndex + 1);
   }, 8000);
 
-  // Mensagens de loading que vão alternando
+  // Mensagens de loading
   const steps = [
     "Carregando interface…",
     "Baixando conteúdo do servidor…",
@@ -100,7 +107,7 @@
     showToast._t = setTimeout(()=>toast.classList.remove("show"), 800);
   }
 
-  // Navegação com setas do teclado
+  // Navegação com setas
   document.addEventListener("keydown", (e) => {
     if(e.repeat) return;
     
@@ -117,7 +124,7 @@
     }
   });
 
-  // Garantir que a música toque em qualquer interação (fallback)
+  // Fallback música
   document.addEventListener('click', () => {
     if(music && music.paused) {
       music.volume = 0.5;
